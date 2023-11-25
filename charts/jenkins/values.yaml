@@ -1,0 +1,58 @@
+shared-chart:
+  name: jenkins
+  namespace: shared-services
+
+  deployment:
+    annotations: {}
+    image: ghcr.io/mohamedalaaelsafy/jenkins-dockerfile
+    tag: latest
+    restartPolicy: Always
+    serviceAccountName: {}
+    securityContext:
+      fsGroup: 412
+      runAsUser: 1000
+    resources:
+      requests:
+        cpu: 30m
+        memory: 10Mi
+      # limits:
+      #   cpu: 100m
+      #   memory: 500Mi
+    ports:
+    - name: http-port
+      containerPort: 8080
+    - name: jnlp-port
+      containerPort: 50000
+    volumeMounts:
+    - name: jenkins-data
+      mountPath: /var/jenkins_home
+    - name: docker-socket
+      mountPath: /var/run/docker.sock
+    volumes:
+    - name: jenkins-data
+      persistentVolumeClaim:
+        claimName: jenkins-pvc
+    - name: docker-socket
+      hostPath:
+        path: /var/run/docker.sock
+
+  service:
+    annotations: {}
+    name: jenkins-svc
+    labels: {}
+    selector:
+      app: jenkins  
+    type: ClusterIP
+    ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: http-port
+
+
+
+  pvc:
+  - name: jenkins-pvc
+    storageClass: standard
+    accessModes:
+    - ReadWriteOnce
+    storage: 5Gi

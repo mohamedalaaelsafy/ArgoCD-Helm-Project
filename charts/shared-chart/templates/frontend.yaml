@@ -1,0 +1,13 @@
+{{- if .Values.frontendConfig }}
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: {{ .Values.frontendConfig.name }}
+  namespace: {{ .Values.namespace }}
+{{- with .Values.frontendConfig.spec}}
+spec:
+  redirectToHttps:
+    enabled: {{ .redirectToHttps.enabled }}
+{{- end }}
+---
+{{- end }}

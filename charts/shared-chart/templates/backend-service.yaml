@@ -1,0 +1,49 @@
+{{- if .Values.backendConfig }}
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Values.backendConfig.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+{{- with .Values.backendConfig.spec }}
+  {{- if .cdn }}
+  cdn:
+    enabled: {{ .cdn.enabled }}
+  {{- end }}
+  {{- if .logging }}
+  logging:
+    enable: {{ .logging.enable }}
+  {{- end }}
+  {{- if .iap }}
+  iap:
+    enabled: {{ .iap.enabled }}
+    oauthclientCredentials:
+      secretName: {{ .iap.oauthclientCredentials.secretName }}
+  {{- end }}
+  {{- if .healthCheck }}
+  healthCheck:
+    checkIntervalSec: {{ .healthCheck.checkIntervalSec }}
+    timeoutSec: {{ .healthCheck.timeoutSec }}
+    healthyThreshold: {{ .healthCheck.healthyThreshold }}
+    unhealthyThreshold: {{ .healthCheck.unhealthyThreshold }}
+    type: {{ .healthCheck.type }}
+    requestPath: {{ .healthCheck.requestPath }}
+    port: {{ .healthCheck.port }}
+  {{- end }}
+  {{- if .customRequestHeaders }}
+  customRequestHeaders:
+    headers:
+    {{- range .customRequestHeaders.headers }}
+      - {{ . }}
+    {{- end }}
+  {{- end }}
+  {{- if .customResponseHeaders }}
+  customResponseHeaders:
+    headers:
+    {{- range .customResponseHeaders.headers }}
+      - {{ . }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+---
+{{- end }}

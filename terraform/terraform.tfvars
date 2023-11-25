@@ -5,7 +5,7 @@ env = "dev"
 
 region = "us-central1"
 
-zone = "us-central1-a"
+zone = "us-central1-c"
 
 
 ### NETWORK ###
@@ -30,13 +30,13 @@ cluster_region = "us-central1"
 
 cluster_zones = ["us-central1-c"]
 
-node_locations = "us-central1-c" # Locations of Nodes
+node_locations = "us-central1-c" # Locations of Nodes in Node pool
 
 machine_type = "e2-medium"
 
 nodes_per_zone = 1
 
-master_node_cidr = "172.16.0.17/28"
+master_node_cidr = "172.16.0.16/28"
 
 master_authorized_networks = [
   {
@@ -46,6 +46,13 @@ master_authorized_networks = [
 ]
 
 ### K8s RESOURCES ####
+# install_resorces = true
 
-install_resorces = false
-namespace = "value"
+install_namespaces = true
+namespaces         = ["argocd", "prod"]
+
+install_argocd   = true
+argocd_namespace = "argocd"
+argocd_app       = "manifest-files/argocd/argocd-app.yml"
+argocd_cm        = "manifest-files/argocd/argocd-cm.yml"
+argocd_secret    = "manifest-files/argocd/argocd-secret.yml"

@@ -3,6 +3,7 @@ terraform {
     bucket = "argocd-helm"
     # prefix = "infrastructure"
   }
+
 }
 
 provider "google" {
@@ -11,13 +12,17 @@ provider "google" {
 }
 
 
-# terraform {
-#   required_providers {
-#     kubectl = {
-#       source  = "gavinbunney/kubectl"
-#       version = ">= 1.7.0"
-#     }
-#   }
-# }
-
+terraform {
+  required_providers {
+    kubectl = {
+      source                = "gavinbunney/kubectl"
+      version               = ">= 1.7.0"
+      configuration_aliases = [kubectl.kctl]
+    }
+    kubernetes = {
+      source                = "hashicorp/kubernetes"
+      configuration_aliases = [kubernetes.k8s]
+    }
+  }
+}
 

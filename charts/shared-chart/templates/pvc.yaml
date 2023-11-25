@@ -1,0 +1,17 @@
+{{- if .Values.pvc }}
+{{- range $value := .Values.pvc }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: {{ $.Values.namespace | lower }}
+  name: {{ $value.name }}
+spec:
+  storageClassName: {{ $value.storageClass  }}
+  accessModes:
+    - {{ $value.accessMode | default "ReadWriteOnce" }}
+  resources:
+    requests:
+      storage: {{ $value.storage }}
+---
+{{- end }}
+{{- end }}

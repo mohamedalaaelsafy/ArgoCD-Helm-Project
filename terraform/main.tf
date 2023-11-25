@@ -29,9 +29,48 @@ module "gke" {
   master_authorized_networks = var.master_authorized_networks
 }
 
-# module "k8s-resorces" {
-#   count        = var.install_resorces ? 1 : 0
-#   source    = "./modules/kube-resources"
-#   namespace = var.namespace
-#   # depends_on = [ gke ]
-# }
+
+module "gke_auth" {
+  source               = "terraform-google-modules/kubernetes-engine/google//modules/auth"
+  project_id           = var.project_id
+  cluster_name         = var.cluster_name
+  location             = var.zone
+  use_private_endpoint = false
+  depends_on           = [module.gke]
+}
+
+
+provider "kubernetes" {
+  cluster_ca_certificate = module.gke_auth.cluster_ca_certificate
+  host                   = module.gke_auth.host
+  token                  = module.gke_auth.token
+  alias                  = "k8s"
+}
+provider "kubectl" {
+  host                   = module.gke_auth.host
+  cluster_ca_certificate = module.gke_auth.cluster_ca_certificate
+  token                  = module.gke_auth.token
+  load_config_file       = false
+  alias                  = "kctl"
+}
+
+
+
+module "k8s-resorces" {
+  source     = "./modules/kube-resources"
+  providers = {
+    kubectl    = kubectl.kctl
+    kubernetes = kubernetes.k8s
+  }
+
+
+  install_namespaces = var.install_namespaces
+  namespaces         = var.namespaces
+
+  install_argocd   = var.install_argocd
+  argocd_namespace = var.argocd_namespace
+  argocd_app       = var.argocd_app
+  argocd_cm        = var.argocd_cm
+  argocd_secret    = var.argocd_secret
+  
+} 

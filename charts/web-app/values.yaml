@@ -1,0 +1,51 @@
+shared-chart:
+  name: wep-app
+  namespace: dev
+
+
+  deployment:
+    annotations: {}
+    image: us-central1-docker.pkg.dev/vodafone-technical-task/dev/web-app
+    tag: latest
+    restartPolicy: Always
+    serviceAccountName: {}
+    resources:
+      requests:
+        cpu: 30m
+        memory: 10Mi
+      limits:
+        cpu: 100m
+        memory: 300Mi
+    ports:
+    - name: app-port
+      containerPort: 80
+
+  service:
+    annotations: 
+      cloud.google.com/neg: '{"ingress": true}'
+      beta.cloud.google.com/backend-config: '{"default": "backend"}'
+    name: app-svc
+    labels: {}
+    selector:
+      app: wep-app  
+    type: ClusterIP
+    ports:
+    - protocol: TCP
+      port: 80
+      targetPort: app-port
+
+  # secret:
+  # - name: my-secret
+  #   data:
+  #     client_id: OTM1NzA5ODQ5NDE5LTIydGMxOGRiNGo3MGhkNzgzcDFjOXZzbTVlam1xbG5sLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tCg==
+  #     client_secret: R09DU1BYLWpVYktTRzZLSUVhLXBYUkdJYTNGZkVMZFlTM0YK
+
+  backendConfig:
+    name: backend
+    spec:
+      iap:
+        enabled: true
+        oauthclientCredentials:
+          secretName: my-secret
+
+
