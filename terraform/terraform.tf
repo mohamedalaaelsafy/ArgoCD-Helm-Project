@@ -1,13 +1,13 @@
 terraform {
   backend "gcs" {
     bucket = "argocd-helm"
-    # prefix = "infrastructure"
+    prefix = "state"
   }
 
 }
 
 provider "google" {
-  project = "vodafone-technical-task"
+  project = "<PROJECT_ID>"
   region  = "us-central1"
 }
 
