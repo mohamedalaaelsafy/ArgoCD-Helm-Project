@@ -4,7 +4,7 @@ metadata:
   name: cicd-application
   namespace: argocd
 spec:
-  project: default
+  project: argocd-cicd  
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:

@@ -105,6 +105,10 @@ variable "install_argocd" {
 variable "argocd_namespace" {
   type = string
 }
+
+variable "argocd_project" {
+  type = string
+}
 variable "argocd_app" {
   type = string
 }

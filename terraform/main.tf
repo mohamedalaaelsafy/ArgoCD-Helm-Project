@@ -57,7 +57,7 @@ provider "kubectl" {
 
 
 module "k8s-resorces" {
-  source     = "./modules/kube-resources"
+  source = "./modules/kube-resources"
   providers = {
     kubectl    = kubectl.kctl
     kubernetes = kubernetes.k8s
@@ -69,8 +69,8 @@ module "k8s-resorces" {
 
   install_argocd   = var.install_argocd
   argocd_namespace = var.argocd_namespace
+  argocd_project   = var.argocd_project
   argocd_app       = var.argocd_app
   argocd_cm        = var.argocd_cm
   argocd_secret    = var.argocd_secret
-  
 } 

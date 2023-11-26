@@ -49,10 +49,11 @@ master_authorized_networks = [
 # install_resorces = true
 
 install_namespaces = true
-namespaces         = ["argocd", "shared-services","dev"]
+namespaces         = ["argocd", "shared-services", "dev"]
 
 install_argocd   = true
 argocd_namespace = "argocd"
+argocd_project   = "manifest-files/argocd/argocd-project.yaml"
 argocd_app       = "manifest-files/argocd/argocd-app.yml"
 argocd_cm        = "manifest-files/argocd/argocd-cm.yml"
 argocd_secret    = "manifest-files/argocd/argocd-secret.yml"

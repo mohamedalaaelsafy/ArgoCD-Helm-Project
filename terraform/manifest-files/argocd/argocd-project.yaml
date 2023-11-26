@@ -1,0 +1,8 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: cicd-project
+  namespace: argocd
+spec:
+  sourceRepos:
+    - "git@github.com:mohamedalaaelsafy/ArgoCD-Helm-Project.git"
