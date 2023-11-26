@@ -5,28 +5,29 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-  - chart: web-app
-    repoURL: git@github.com:mohamedalaaelsafy/ArgoCD-Helm-Project.git
-    targetRevision: 0.1.0
-    helm:
-      releaseName: web-app
-    valueFiles:
-    - charts/web-app/values.yaml
-  - chart: jenkins
-    repoURL: git@github.com:mohamedalaaelsafy/ArgoCD-Helm-Project.git
-    targetRevision: 0.1.0
-    helm:
-      releaseName: jenkins
-    valueFiles:
-    - charts/jenkins/values.yaml
-  # syncPolicy:
-  #   automated:
-  #     prune: true 
-  #     selfHeal: true 
-  #     allowEmpty: false 
   destination:
     server: https://kubernetes.default.svc
-    # namespace: cicd
+  syncPolicy:
+    automated:
+      prune: true 
+      selfHeal: true 
+      allowEmpty: false 
+  sources:
+  # - chart: web-app
+  - repoURL: 'git@github.com:mohamedalaaelsafy/ArgoCD-Helm-Project.git'
+    targetRevision: HEAD
+    path: charts/web-app/
+    helm:
+      releaseName: web-app
+      valueFiles:
+      - values.yaml
+  # - chart: jenkins
+  - repoURL: 'git@github.com:mohamedalaaelsafy/ArgoCD-Helm-Project.git'
+    targetRevision: HEAD
+    path: charts/jenkins/
+    helm:
+      releaseName: jenkins
+      valueFiles:
+      - values.yaml
 
 

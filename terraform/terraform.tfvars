@@ -49,7 +49,7 @@ master_authorized_networks = [
 # install_resorces = true
 
 install_namespaces = true
-namespaces         = ["argocd", "prod"]
+namespaces         = ["argocd", "shared-services","dev"]
 
 install_argocd   = true
 argocd_namespace = "argocd"
